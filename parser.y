@@ -40,7 +40,7 @@
 %left AND_OP
 %left OR_OP
 
-%token VOID INT CHAR BOOL DOUBLE CONST NULL STRUCT
+%token VOID INT CHAR BOOL DOUBLE CONST NULL STRUCT TRUE FALSE
 %token CASE DEFAULT DO WHILE FOR IF SWITCH
 %token CONTINUE BREAK RETURN
 %token INT_CONSTANT
@@ -264,10 +264,14 @@ int main(void) {
   return 0;
 }
 
+extern int numL;
+extern char buf[1000];
+extern char *yytext;
+
 int yyerror( char *msg ) {
-	fprintf( stderr, "*** Error at line %d: %s\n", linenum, buff );
+	fprintf( stderr, "*** Error at line %d: %s\n", numL, buf );
 	fprintf( stderr, "\n" );
 	fprintf( stderr, "Unmatched token: %s\n", yytext );
 	fprintf( stderr, "*** syntax error\n");
-	exit(_1);
+	exit(-1);
 }

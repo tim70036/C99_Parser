@@ -3,7 +3,7 @@
 %{
     #include <stdio.h>
     #include <string.h>
-    #include <math.h>
+    #include "y.tab.h"
 
     int numL = 1;
     char buf[1000];
@@ -37,7 +37,7 @@ STR     L?\"(\\(n|t)|[^"\\\n])*\"
 
 ID      [a-zA-Z_]+[a-zA-Z_0-9]*
 
-PUNC    ":"|";"|","|"."|"["|"]"|"("|")"|"{"|"}"
+PUNC    ":"|";"|","|"."|"["|"]"|"("|")"|"{"|"}"|"?"
 OP      "+"|"-"|"*"|"/"|"%"|"++"|"--"|"<"|"<="|">"|">="|"=="|"!="|"="|"&&"|"||"|"!"|"&"
 KEY     "void"|"int"|"double"|"bool"|"char"|"null"|"for"|"while"|"do"|"if"|"else"|"switch"|"return"|"break"|"continue"|"const"|"true"|"false"|"struct"|"case"|"default"
 STDIO    "remove"|"rename"|"tmpfile"|"tmpnam"|"fclose"|"fflush"|"fopen"|"freopen"|"setbuf"|"setvbuf"|"fprintf"|"fscanf"|"printf"|"scanf"|"sprintf"|"sscanf"|"vfprintf"|"vprintf"|"vsprintf"|"fgetc"|"fgets"|"fputc"|"fputs"|"getc"|"getchar"|"gets"|"putc"|"putchar"|"puts"|"ungetc"|"fread"|"fwrite"|"fgetpos"|"fseek"|"fsetpos"|"ftell"|"rewind"|"clearerr"|"feof"|"ferror"|"perror"
@@ -125,6 +125,29 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to parser */
+        if(strcmp(yytext, "void") == 0) return VOID;
+        if(strcmp(yytext, "int") == 0) return INT;
+        if(strcmp(yytext, "double") == 0) return DOUBLE;
+        if(strcmp(yytext, "bool") == 0) return BOOL;
+        if(strcmp(yytext, "char") == 0) return CHAR;
+        if(strcmp(yytext, "null") == 0) return NULL;
+        if(strcmp(yytext, "for") == 0) return FOR;
+        if(strcmp(yytext, "while") == 0) return WHILE;
+        if(strcmp(yytext, "do") == 0) return DO;
+        if(strcmp(yytext, "if") == 0) return IF;
+        if(strcmp(yytext, "else") == 0) return ELSE;
+        if(strcmp(yytext, "switch") == 0) return SWITCH;
+        if(strcmp(yytext, "return") == 0) return RETURN;
+        if(strcmp(yytext, "break") == 0) return BREAK;
+        if(strcmp(yytext, "continue") == 0) return CONTINUE;
+        if(strcmp(yytext, "const") == 0) return CONST;
+        if(strcmp(yytext, "struct") == 0) return STRUCT;
+        if(strcmp(yytext, "true") == 0) return TRUE;
+        if(strcmp(yytext, "false") == 0) return FALSE;
+        if(strcmp(yytext, "case") == 0) return CASE;
+        if(strcmp(yytext, "default") == 0) return DEFAULT;
     }
 
 {STDIO}  {
@@ -146,6 +169,9 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        return INT_CONSTANT;
     }
 
 {DOUBLE}  {
@@ -154,6 +180,9 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        return DOUBLE_CONSTANT;
     }
 
 {SCI}    {
@@ -162,6 +191,9 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        return DOUBLE_CONSTANT;
     }
 
 {PUNC}   {
@@ -170,14 +202,47 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
-    }
 
+        /* Return to Parser */
+        if(strcmp(yytext, ":") == 0) return ':';
+        if(strcmp(yytext, ";") == 0) return ';';
+        if(strcmp(yytext, ",") == 0) return ',';
+        if(strcmp(yytext, ".") == 0) return '.';
+        if(strcmp(yytext, "[") == 0) return '[';
+        if(strcmp(yytext, "]") == 0) return ']';
+        if(strcmp(yytext, "(") == 0) return '(';
+        if(strcmp(yytext, ")") == 0) return ')';
+        if(strcmp(yytext, "{") == 0) return '{';
+        if(strcmp(yytext, "}") == 0) return '}';
+        if(strcmp(yytext, "?") == 0) return '?';
+    }
+"+"|"-"|"*"|"/"|"%"|"++"|"--"|"<"|"<="|">"|">="|"=="|"!="|"="|"&&"|"||"|"!"|"&"
 {OP}    {
         /* Check pragma */
         if(tokenOn == 1)    printf("#op:%s\n",yytext);
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        if(strcmp(yytext, "+") == 0) return PLUS_OP;
+        if(strcmp(yytext, "-") == 0) return MINUS_OP;
+        if(strcmp(yytext, "*") == 0) return MUL_OP;
+        if(strcmp(yytext, "/") == 0) return DIV_OP;
+        if(strcmp(yytext, "%") == 0) return MOD_OP;
+        if(strcmp(yytext, "++") == 0) return PLUSPLUS_OP;
+        if(strcmp(yytext, "--") == 0) return MINUSMINUS_OP;
+        if(strcmp(yytext, "<") == 0) return LT_OP;
+        if(strcmp(yytext, "<=") == 0) return LE_OP;
+        if(strcmp(yytext, ">") == 0) return GT_OP;
+        if(strcmp(yytext, ">=") == 0) return GE_OP;
+        if(strcmp(yytext, "==") == 0) return EQUAL_OP;
+        if(strcmp(yytext, "!=") == 0) return NEQUAL_OP;
+        if(strcmp(yytext, "=") == 0) return '=';
+        if(strcmp(yytext, "&&") == 0) return AND_OP;
+        if(strcmp(yytext, "||") == 0) return OR_OP;
+        if(strcmp(yytext, "!") == 0) return NOT_OP;
+        if(strcmp(yytext, "&") == 0) return '&';
     }
 
 {CHAR}  {
@@ -189,6 +254,9 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        return CHAR_CONSTANT;
     }
 
 
@@ -214,6 +282,9 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        return STRING_CONSTANT;
     }
 
 [0-9]+{ID}  {
@@ -227,6 +298,9 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        return ID;
     }
 
 {SPACE}   {
@@ -248,16 +322,13 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
 .   {
         fprintf(stderr, "Error at line %d: %s\n", numL, yytext); exit(1);
-
-        strcpy(&(buf[bufIndex]), yytext);
-        bufIndex += yyleng;
     }
 
 
 %%
 
     /* C code Section */
-
+/*
 int main(int argc, char* argv[])
 {
     ++argv; --argc; /* Skip program name */
@@ -267,3 +338,4 @@ int main(int argc, char* argv[])
 
     return 0;
 }
+*/
