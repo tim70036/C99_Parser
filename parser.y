@@ -31,7 +31,24 @@
 %token Identifier_List
 %token Initializer_List
 
+/* Terminal Part */
+%left PLUSPLUS_OP MINUSMINUS_OP
+%left MUL_OP DIV_OP MOD_OP
+%left MINUS_OP PLUS_OP
+%left LT_OP LE_OP GT_OP GE_OP EQUAL_OP NEQUAL_OP
+%left NOT_OP
+%left AND_OP
+%left OR_OP
 
+%token VOID INT CHAR BOOL DOUBLE CONST NULL STRUCT
+%token CASE DEFAULT DO WHILE FOR IF SWITCH
+%token CONTINUE BREAK RETURN
+%token INT_CONSTANT
+%token DOUBLE_CONSTANT
+%token CHAR_CONSTANT
+%token STRING_CONSTANT
+%token ID
+/*%token ';' '=' '{' '}' '[' ']' '?' ':' ','*/
 
 %%
 
@@ -133,6 +150,10 @@ Statement:    Labeled_Statement
          |    Jump_Statement
          ;
 
+Labeled_Statement:    CASE Conditional_Expression ':' Statement
+                 |    DEFAULT ':' Statement
+                 ;
+
 Expression_Statement:   ';'
                     |   Expression ';'
                     ;
@@ -217,8 +238,9 @@ Postfix_Expression:    Primary_Expression
                   ;
 
 Primary_Expression:    ID
-                  |    CONSTANT
-                  |    STRING_LITERAL
+                  |    INT_CONSTANT
+                  |    DOUBLE_CONSTANT
+                  |    STRING_CONSTANT
                   |    '(' Expression ')'
                   ;
 
@@ -233,7 +255,7 @@ Unary_Operator:    NOT_OP
               |    MINUS_OP
               ;
 
-Assignment_Operator:    ASSIGN_OP;
+Assignment_Operator:    '=';
 
 %%
 
