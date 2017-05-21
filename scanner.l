@@ -132,7 +132,7 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
         if(strcmp(yytext, "double") == 0) return DOUBLE;
         if(strcmp(yytext, "bool") == 0) return BOOL;
         if(strcmp(yytext, "char") == 0) return CHAR;
-        if(strcmp(yytext, "null") == 0) return NULL;
+        if(strcmp(yytext, "null") == 0) return NUL;
         if(strcmp(yytext, "for") == 0) return FOR;
         if(strcmp(yytext, "while") == 0) return WHILE;
         if(strcmp(yytext, "do") == 0) return DO;
@@ -327,11 +327,11 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
 %%
 
-    /* C code Section */
+/* C code Section */
 /*
 int main(int argc, char* argv[])
 {
-    ++argv; --argc; /* Skip program name */
+    ++argv; --argc;
     yyin = ( argc > 0 ) ? fopen(argv[0], "r") : stdin;
 
     yylex();
