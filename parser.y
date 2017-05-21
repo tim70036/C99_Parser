@@ -114,10 +114,7 @@ Non_Void_Type_Specifier:    INT
                        ;
 
 Type_Specifier:    VOID
-              |    INT
-              |    CHAR
-              |    BOOL
-              |    DOUBLE
+              |    Non_Void_Type_Specifier
               ;
 
 
