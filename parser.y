@@ -3,35 +3,8 @@
     #include <stdio.h>
 %}
 
-/* Expression Part */
-%token Expression
-%token Assignment_Expression Conditional_Expression Logical_Or_Expression Logical_And_Expression
-%token Equality_Expression Relational_Expression Additive_Expression Multiplicative_Expression
-%token Unary_Expression Postfix_Expression Primary_Expression
-%token Argument_Expression_List Unary_Operator Assignment_Operator
-
-/* Statement Part */
-%token Compound_Statement
-%token Block_Item_List
-%token Block_Item
-%token Statement
-%token Labeled_Statement Expression_Statement Selection_Statement Iteration_Statement Jump_Statement
-
-/* Declaration Part */
 %start Translation_Unit
-%token External_Declaration
-%token Function_Definition
-%token Declaration_Specifiers
-%token Declaration_List
-%token Declaration
-%token Declarator
-%token Init_Declarator_List Init_Declarator Initializer
-%token Type_Specifier Type_Qualifier
-%token Parameter_List
-%token Identifier_List
-%token Initializer_List
 
-/* Terminal Part */
 %left PLUSPLUS_OP MINUSMINUS_OP
 %left MUL_OP DIV_OP MOD_OP
 %left MINUS_OP PLUS_OP
