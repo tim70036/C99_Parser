@@ -37,8 +37,10 @@ External_Declaration:   Function_Definition { FunctionNum++; }
                     |   Declaration
                     ;
 
-Function_Definition:    Type_Specifier ID '(' ')' Compound_Statement
-                   |    Type_Specifier ID '(' Parameter_List ')' Compound_Statement
+Function_Definition:    Non_Void_Type_Specifier ID '(' ')' Compound_Statement
+                   |    Non_Void_Type_Specifier ID '(' Parameter_List ')' Compound_Statement
+                   |    VOID ID '(' ')' Compound_Statement
+                   |    VOID ID '(' Parameter_List ')' Compound_Statement
                    ;
 
 Declaration:    Function_Declaration
@@ -46,8 +48,10 @@ Declaration:    Function_Declaration
            |    Normal_Declaration
            ;
 
-Function_Declaration:   Type_Specifier ID '(' ')' ';'
-                    |   Type_Specifier ID '(' Parameter_List ')' ';'
+Function_Declaration:    Non_Void_Type_Specifier ID '(' ')' ';'
+                    |    Non_Void_Type_Specifier ID '(' Parameter_List ')' ';'
+                    |    VOID ID '(' ')' ';'
+                    |    VOID ID '(' Parameter_List ')' ';'
                     ;
 
 Const_Declaration:    CONST Non_Void_Type_Specifier Const_Declarator_List ';'
@@ -112,11 +116,6 @@ Non_Void_Type_Specifier:    INT
                        |    BOOL
                        |    DOUBLE
                        ;
-
-Type_Specifier:    VOID
-              |    Non_Void_Type_Specifier
-              ;
-
 
 
 
