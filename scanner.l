@@ -216,7 +216,7 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
         if(strcmp(yytext, "}") == 0) return '}';
         if(strcmp(yytext, "?") == 0) return '?';
     }
-"+"|"-"|"*"|"/"|"%"|"++"|"--"|"<"|"<="|">"|">="|"=="|"!="|"="|"&&"|"||"|"!"|"&"
+
 {OP}    {
         /* Check pragma */
         if(tokenOn == 1)    printf("#op:%s\n",yytext);
