@@ -15,4 +15,7 @@ int main()
 
     // Initialization using invoking funciton
     int c = a();
+
+    // Return nothing
+    return;
 }
