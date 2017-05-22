@@ -78,8 +78,8 @@ Normal_Declarator_List:    Normal_Declarator
 
 Normal_Declarator:    ID
                  |    Array
-                 |    ID '=' Expression                { if(FunctionCall == 1) yyerror(NULL); }
-                 |    Array '=' '{' Array_Content '}'  { if(FunctionCall == 1) yyerror(NULL); }
+                 |    ID '=' Expression
+                 |    Array '=' Array_Content
                  ;
 
 
@@ -98,8 +98,8 @@ Array_Paranthesis:    '[' INT_CONSTANT ']'
                  |    Array_Paranthesis '[' INT_CONSTANT ']'
                  ;
 
-Array_Content:    Expression
-             |    Array_Content ',' Expression
+Array_Content:    '{' '}'
+             |    '{' Expression_List '}'
              ;
 
 Array_Expression:    '[' Expression ']'
@@ -133,7 +133,7 @@ Block_Item:    Declaration
           |    Statement
           ;
 
-Statement:    Simple_Statement { FunctionCall = 0; }
+Statement:    Simple_Statement
          |    Switch_Statement
          |    Selection_Statement
          |    Iteration_Statement
@@ -249,8 +249,8 @@ Primary_Expression:    Var
                   |    TRUE
                   |    FALSE
                   |    '(' Expression ')'
-                  |    ID '(' ')'                   { FunctionCall = 1; }
-                  |    ID '(' Expression_List ')'   { FunctionCall = 1; }
+                  |    ID '(' ')'
+                  |    ID '(' Expression_List ')'
                   ;
 
 Expression_List:    Expression

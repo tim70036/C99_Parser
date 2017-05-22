@@ -102,4 +102,4 @@ int func(int d, char e, bool f, double g, int h[0][33][2]);
 
 double i[0][1][2][3];
 
-char h = 'h', j[1][2] = {'j'}, k[4] = {'k' , 'k', 'k', 'k'};
+char h = 'h', j[1][2] = {}, k[4] = {'k' , 'k', 'k', 'k'};
