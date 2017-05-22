@@ -69,7 +69,6 @@ Const_Declarator:    ID '=' INT_CONSTANT
                 |    ID '=' FALSE
                 ;
 
-
 Normal_Declaration:    Non_Void_Type_Specifier Normal_Declarator_List ';'
                   ;
 
@@ -134,7 +133,7 @@ Block_Item:    Declaration
           |    Statement
           ;
 
-Statement:    Simple_Statement
+Statement:    Simple_Statement { FunctionCall = 0; }
          |    Switch_Statement
          |    Selection_Statement
          |    Iteration_Statement
@@ -155,9 +154,15 @@ Case_List:    Case_Content
          |    Case_List Case_Content
          ;
 
-Case_Content:    CASE INT_CONSTANT ':' Statement_List
+Case_Content:     CASE INT_CONSTANT ':' Statement_List
             |     CASE CHAR_CONSTANT ':' Statement_List
+            |     CASE INT_CONSTANT ':'
+            |     CASE CHAR_CONSTANT ':'
             ;
+
+Default_Content:    DEFAULT ':' Statement_List
+               |    DEFAULT ':'
+               ;
 
 Statement_List:    Statement
               |    Statement_List Statement
@@ -254,13 +259,6 @@ Expression_List:    Expression
 
 %%
 
-int main(void) {
-  yyparse();
-  if (FunctionNum == 0) yyerror(NULL);
-  printf("No syntax error!\n");
-  return 0;
-}
-
 extern int numL;
 extern char buf[1000];
 extern char *yytext;
@@ -271,4 +269,11 @@ int yyerror( char *msg ) {
 	fprintf( stderr, "Unmatched token: %s\n", yytext );
 	fprintf( stderr, "*** syntax error\n");
 	exit(-1);
+}
+
+int main(void) {
+  yyparse();
+  if (FunctionNum == 0) yyerror(NULL);
+  printf("No syntax error!\n");
+  return 0;
 }
