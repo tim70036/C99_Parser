@@ -25,7 +25,6 @@
 %token CHAR_CONSTANT
 %token STRING_CONSTANT
 %token ID
-/*%token ';' '=' '{' '}' '[' ']' '?' ':' ','*/
 
 %%
 
@@ -78,7 +77,7 @@ Normal_Declarator_List:    Normal_Declarator
 
 Normal_Declarator:    ID
                  |    Array
-                 |    ID '=' Expression
+                 |    ID '=' Init_Expression
                  |    Array '=' Array_Content
                  ;
 
@@ -99,7 +98,7 @@ Array_Paranthesis:    '[' INT_CONSTANT ']'
                  ;
 
 Array_Content:    '{' '}'
-             |    '{' Expression_List '}'
+             |    '{' Init_Expression_List '}'
              ;
 
 Array_Expression:    '[' Expression ']'
@@ -256,6 +255,68 @@ Primary_Expression:    Var
 Expression_List:    Expression
                |    Expression_List ',' Expression
                ;
+
+
+
+
+
+
+
+
+
+
+
+
+Init_Expression_List:    Init_Expression
+                    |    Init_Expression_List ',' Init_Expression
+                    ;
+Init_Expression:    Init_Conditional_Expression
+               ;
+Init_Conditional_Expression:    Init_Logical_Or_Expression
+                           |    Init_Logical_Or_Expression '?' Init_Expression ':' Init_Conditional_Expression
+                           ;
+Init_Logical_Or_Expression:    Init_Logical_And_Expression
+                          |    Init_Logical_Or_Expression OR_OP Init_Logical_And_Expression
+                          ;
+Init_Logical_And_Expression:    Init_Not_Expression
+                           |    Init_Logical_And_Expression AND_OP Init_Not_Expression
+                           ;
+Init_Not_Expression:    Init_Relational_Expression
+                   |    NOT_OP Init_Relational_Expression
+                   ;
+Init_Relational_Expression:    Init_Additive_Expression
+                          |    Init_Relational_Expression LT_OP Init_Additive_Expression
+                          |    Init_Relational_Expression LE_OP Init_Additive_Expression
+                          |    Init_Relational_Expression GT_OP Init_Additive_Expression
+                          |    Init_Relational_Expression GE_OP Init_Additive_Expression
+                          |    Init_Relational_Expression EQUAL_OP Init_Additive_Expression
+                          |    Init_Relational_Expression NEQUAL_OP Init_Additive_Expression
+                          ;
+Init_Additive_Expression:    Init_Multiplicative_Expression
+                        |    Init_Additive_Expression PLUS_OP Init_Multiplicative_Expression
+                        |    Init_Additive_Expression MINUS_OP Init_Multiplicative_Expression
+                        ;
+Init_Multiplicative_Expression:    Init_Unary_Expression
+                              |    Init_Multiplicative_Expression MUL_OP Init_Unary_Expression
+                              |    Init_Multiplicative_Expression DIV_OP Init_Unary_Expression
+                              |    Init_Multiplicative_Expression MOD_OP Init_Unary_Expression
+                              ;
+Init_Unary_Expression:    Init_Postfix_Expression
+                     |    MINUS_OP Init_Postfix_Expression
+                     ;
+Init_Postfix_Expression:    Init_Primary_Expression
+                       |    Init_Primary_Expression PLUSPLUS_OP
+                       |    Init_Primary_Expression MINUSMINUS_OP
+                       ;
+Init_Primary_Expression:    Var
+                       |    INT_CONSTANT
+                       |    DOUBLE_CONSTANT
+                       |    CHAR_CONSTANT
+                       |    STRING_CONSTANT
+                       |    TRUE
+                       |    FALSE
+                       |    '(' Init_Expression ')'
+                       ;
 
 %%
 

@@ -11,10 +11,7 @@ int main()
     int a(int b);
 
     // Conditional Expression
-    a = (a > 1) ? 1 : 0;
-
-    // Initialization using invoking funciton
-    int c = a();
+    a = (a > 1) ? 1+2 : a+3;
 
     // Return nothing
     return;

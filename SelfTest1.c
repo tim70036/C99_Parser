@@ -6,12 +6,14 @@ int b = 1 + 1;
 const char b = "aa";
 const char b = 'a';
 const bool b = true;
+char a[100][100][3] = {a,a[3+2]+1*2%3+2||3&&2+"2">'3'}, b[1][2] = {};
 int main()
 {
+    b = func();
+    b[func()][1+2+'3' || "what" != a[3] + func(a, 1+1, a && b - c, d++, "???"+3 , true)][false > 1] = func(a, 1+1, a && b - c, d++, "???"+3 , true);
     int a = 1;
     const char b = 'a';
     const bool b = true;
-    a = func();
     if(a == 1)
     {
         int a = 1;
@@ -30,7 +32,7 @@ int main()
 
     }
 
-    for(-a ; a < 3 ;a++)
+    for(-a+func() ; a < 3 ;a++)
     {
         int a = 1;
         a = 1;
@@ -38,7 +40,6 @@ int main()
         {
             for(; func() ; )
             {
-                a[0][1][2] = func();
                 a[func()][b][3] = -(a[func()][b][3]);
             }
         }
