@@ -156,6 +156,9 @@ TOKEN_OFF   #{SPACE}?"pragma"{SPACE}"token"{SPACE}"off"{SPACE}?\n
 
         strcpy(&(buf[bufIndex]), yytext);
         bufIndex += yyleng;
+
+        /* Return to Parser */
+        return ID;
     }
 
 0{INT}  {
